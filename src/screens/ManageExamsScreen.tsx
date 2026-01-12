@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../db';
-import type { ExamConfig, SubjectConfig } from '../db';
-import { ChevronLeft, Plus, Trash2, Save, X, BookOpen, Clock } from 'lucide-react';
+import type { ExamConfig } from '../db';
+import { ChevronLeft, Plus, Trash2, Save, X } from 'lucide-react';
 
 export const ManageExamsScreen: React.FC = () => {
     const navigate = useNavigate();

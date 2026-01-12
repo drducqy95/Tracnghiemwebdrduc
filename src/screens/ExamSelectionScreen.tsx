@@ -2,14 +2,14 @@ import React, { useState, useMemo } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../db';
-import { Search, PenTool, Settings, PlayCircle, Clock, BookOpen, ChevronRight, Filter } from 'lucide-react';
+import { Search, PenTool, Settings, PlayCircle, Clock, BookOpen, ChevronRight } from 'lucide-react';
 import { useExamStore } from '../store';
 import { useSettingsStore } from '../store';
 
 export const ExamSelectionScreen: React.FC = () => {
     const navigate = useNavigate();
     const { startSession } = useExamStore();
-    const { darkMode } = useSettingsStore();
+    const { } = useSettingsStore();
 
     const [activeTab, setActiveTab] = useState<'Kỳ thi' | 'Tự chọn'>('Kỳ thi');
     const [searchQuery, setSearchQuery] = useState('');
@@ -94,8 +94,8 @@ export const ExamSelectionScreen: React.FC = () => {
                             key={tab}
                             onClick={() => setActiveTab(tab as any)}
                             className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === tab
-                                    ? 'bg-white dark:bg-zinc-700 shadow-sm text-gray-900 dark:text-white'
-                                    : 'text-gray-500 dark:text-gray-400'
+                                ? 'bg-white dark:bg-zinc-700 shadow-sm text-gray-900 dark:text-white'
+                                : 'text-gray-500 dark:text-gray-400'
                                 }`}
                         >
                             {tab}

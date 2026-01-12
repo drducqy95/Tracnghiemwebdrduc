@@ -35,7 +35,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({ isOpen, onClose }) => 
             const extension = file.name.split('.').pop()?.toLowerCase();
 
             if (extension === 'zip') {
-                result = await ImportService.importFromZip(file);
+                result = await ImportService.importFromZip(file, null);
             } else if (extension === 'json') {
                 if (selectedSubjectId === null) throw new Error('Vui lòng chọn bộ đề trước khi import JSON/Excel/Docx');
                 result = await ImportService.importFromJson(file, selectedSubjectId);
