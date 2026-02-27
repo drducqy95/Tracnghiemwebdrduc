@@ -105,10 +105,23 @@ export const ExamScreen: React.FC = () => {
 
     const { userAnswers, timeLeft } = currentSession;
 
-    // Handle Answer
+    // Handle Answer — multi-select toggle for MULTIPLE_CHOICE
     const handleAnswer = (letter: string) => {
         if (currentSession.isFinished || showNextSubjectModal) return;
-        updateAnswer(currentQuestion.id!, letter);
+
+        if (currentQuestion.questionType === 'MULTIPLE_CHOICE') {
+            const current = userAnswers[currentQuestion.id!] || '';
+            if (current.includes(letter)) {
+                // Deselect
+                updateAnswer(currentQuestion.id!, current.replace(letter, ''));
+            } else {
+                // Add (keep sorted)
+                const newVal = (current + letter).split('').sort().join('');
+                updateAnswer(currentQuestion.id!, newVal);
+            }
+        } else {
+            updateAnswer(currentQuestion.id!, letter);
+        }
     };
 
     const handleSubAnswer = (idx: number, val: boolean) => {
@@ -142,8 +155,17 @@ export const ExamScreen: React.FC = () => {
             } else {
                 totalItems++;
                 const userA = userAnswers[q.id!] || '';
-                // Single Choice: exact match
-                if (q.correctAnswers.includes(userA)) correctCount++;
+                if (q.questionType === 'MULTIPLE_CHOICE') {
+                    // Multi-select: exact match — selected must equal correctAnswers exactly
+                    const selectedLetters = userA.split('').sort();
+                    const correctLetters = [...q.correctAnswers].sort();
+                    const isExact = selectedLetters.length === correctLetters.length &&
+                        selectedLetters.every((l, i) => l === correctLetters[i]);
+                    if (isExact) correctCount++;
+                } else {
+                    // TRUE_FALSE: single answer
+                    if (q.correctAnswers.includes(userA)) correctCount++;
+                }
             }
         });
 

@@ -1,0 +1,94 @@
+{
+  "milestones": [
+    {
+      "id": "M1",
+      "title": "Project Initialization & Repository Setup",
+      "status": "DONE",
+      "tasks": [
+        {
+          "id": "T1.1",
+          "desc": "Initialize Trinity state files",
+          "status": "DONE"
+        },
+        {
+          "id": "T1.2",
+          "desc": "Clone repository and analyze codebase",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "M2",
+      "title": "Bug Fixes - Practice & Exam Screens",
+      "status": "DONE",
+      "tasks": [
+        {
+          "id": "T2.1",
+          "desc": "Fix TRUE_FALSE_TABLE display in PracticeScreen (use QuestionView)",
+          "status": "DONE"
+        },
+        {
+          "id": "T2.2",
+          "desc": "Fix QuestionView result styling (TailwindMerge override bug)",
+          "status": "DONE"
+        },
+        {
+          "id": "T2.3",
+          "desc": "Add multi-select toggle for MULTIPLE_CHOICE in PracticeScreen",
+          "status": "DONE"
+        },
+        {
+          "id": "T2.4",
+          "desc": "Add 'Kiểm tra kết quả' button (deferred evaluation)",
+          "status": "DONE"
+        },
+        {
+          "id": "T2.5",
+          "desc": "Add correct answer summary + explanation display",
+          "status": "DONE"
+        },
+        {
+          "id": "T2.6",
+          "desc": "Add multi-select toggle for MULTIPLE_CHOICE in ExamScreen",
+          "status": "DONE"
+        },
+        {
+          "id": "T2.7",
+          "desc": "Fix ReviewExamScreen filter logic for multi-select + TF_TABLE",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "M3",
+      "title": "Practice Stats & Filter Feature",
+      "status": "DONE",
+      "tasks": [
+        {
+          "id": "T3.1",
+          "desc": "Stats overview screen (progress ring, learned/unlearned/wrong)",
+          "status": "DONE"
+        },
+        {
+          "id": "T3.2",
+          "desc": "3 practice modes (all/unlearned/wrong)",
+          "status": "DONE"
+        },
+        {
+          "id": "T3.3",
+          "desc": "Recursive question loading from child subjects",
+          "status": "DONE"
+        },
+        {
+          "id": "T3.4",
+          "desc": "Auto-update question status after checking (mastered/wrong)",
+          "status": "DONE"
+        }
+      ]
+    }
+  ],
+  "current_milestone": "M3",
+  "meta": {
+    "last_updated": "2026-02-27T22:57:00.774699"
+  }
+}

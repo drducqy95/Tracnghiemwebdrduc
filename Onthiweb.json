@@ -1,0 +1,13 @@
+{
+    "project_name": "Onthiweb",
+    "tech_stack": {
+        "frontend": "React 19 (Vite)",
+        "backend": "Client-side only (PWA)",
+        "database": "Dexie (IndexedDB)",
+        "styling": "Tailwind CSS + Framer Motion"
+    },
+    "rules": [
+        "Follow Trinity Protocol v1.0"
+    ],
+    "identity_vector": "Onthiweb Core"
+}

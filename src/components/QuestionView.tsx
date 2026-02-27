@@ -40,8 +40,27 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
                 <div className="space-y-3">
                     {question.options.map((option, idx) => {
                         const letter = String.fromCharCode(65 + idx);
-                        const isSelected = selectedAnswer?.includes(letter);
+                        const isSelected = !!selectedAnswer?.includes(letter);
                         const isCorrect = question.correctAnswers.includes(letter);
+
+                        // Determine button styling based on state
+                        let buttonStyle = "bg-white dark:bg-zinc-900 border-gray-100 dark:border-zinc-800 shadow-sm";
+                        let badgeStyle = "bg-gray-100 dark:bg-zinc-800 text-gray-400";
+
+                        if (showResult) {
+                            // Show results state
+                            if (isCorrect) {
+                                buttonStyle = "bg-emerald-50 dark:bg-emerald-500/10 border-emerald-500/50 text-emerald-600 dark:text-emerald-400 font-bold";
+                                badgeStyle = "bg-emerald-500 text-white";
+                            } else if (isSelected && !isCorrect) {
+                                buttonStyle = "bg-red-50 dark:bg-red-500/10 border-red-500/50 text-red-600 dark:text-red-400";
+                                badgeStyle = "bg-red-500 text-white";
+                            }
+                        } else if (isSelected) {
+                            // Selected but not checked yet
+                            buttonStyle = "bg-primary/5 border-primary ring-1 ring-primary/20";
+                            badgeStyle = "bg-primary text-white";
+                        }
 
                         return (
                             <button
@@ -50,16 +69,16 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
                                 onClick={() => onAnswer(letter)}
                                 className={cn(
                                     "w-full p-4 rounded-2xl border text-left transition-all active:scale-[0.99] flex gap-4 items-center",
-                                    !showResult && isSelected ? "bg-primary/5 border-primary ring-1 ring-primary/20" : "bg-white dark:bg-zinc-900 border-gray-100 dark:border-zinc-800 shadow-sm",
-                                    showResult && isCorrect && "bg-emerald-50 dark:bg-emerald-500/10 border-emerald-500/50 text-emerald-600 dark:text-emerald-400 font-bold",
-                                    showResult && isSelected && !isCorrect && "bg-red-50 dark:bg-red-500/10 border-red-500/50 text-red-600 dark:text-red-400"
+                                    buttonStyle
                                 )}
                             >
                                 <div className={cn(
                                     "w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 transition-colors",
-                                    isSelected ? "bg-primary text-white" : "bg-gray-100 dark:bg-zinc-800 text-gray-400"
+                                    badgeStyle
                                 )}>
-                                    {letter}
+                                    {showResult && isCorrect ? <Check size={16} /> :
+                                        showResult && isSelected && !isCorrect ? <X size={16} /> :
+                                            letter}
                                 </div>
                                 <div className="flex-1">
                                     {option}
@@ -113,6 +132,19 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
                             </div>
                         </div>
                     ))}
+                </div>
+            )}
+
+            {/* Correct Answer Summary — shown after checking */}
+            {showResult && (
+                <div className="p-4 rounded-2xl bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-900/30 animate-in fade-in duration-300">
+                    <p className="text-sm font-bold text-blue-700 dark:text-blue-400">
+                        📌 Đáp án đúng: {
+                            question.questionType === 'TRUE_FALSE_TABLE'
+                                ? question.subAnswers.map((a, i) => `${i + 1}. ${a ? 'Đúng' : 'Sai'}`).join(' | ')
+                                : question.correctAnswers.join(', ')
+                        }
+                    </p>
                 </div>
             )}
 

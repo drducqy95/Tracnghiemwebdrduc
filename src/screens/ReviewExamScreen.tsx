@@ -77,9 +77,24 @@ export const ReviewExamScreen: React.FC = () => {
 
     const filteredQuestions = questions.filter(q => {
         const userAns = result?.userAnswers?.[q.id!] || null;
-        // Logic check: if userAnswers is missing (legacy), try to fail gracefully
-        const isCorrect = userAns && q.correctAnswers.includes(userAns);
-        const isAnswered = userAns !== null && userAns !== undefined;
+        const isAnswered = userAns !== null && userAns !== undefined && userAns !== '';
+
+        let isCorrect = false;
+        if (isAnswered) {
+            if (q.questionType === 'TRUE_FALSE_TABLE') {
+                try {
+                    const userSub: boolean[] = JSON.parse(userAns || '[]');
+                    isCorrect = q.subAnswers.every((correct, idx) => userSub[idx] === correct);
+                } catch { isCorrect = false; }
+            } else if (q.questionType === 'MULTIPLE_CHOICE') {
+                const selectedLetters = (userAns || '').split('').sort();
+                const correctLetters = [...q.correctAnswers].sort();
+                isCorrect = selectedLetters.length === correctLetters.length &&
+                    selectedLetters.every((l, i) => l === correctLetters[i]);
+            } else {
+                isCorrect = q.correctAnswers.includes(userAns!);
+            }
+        }
 
         switch (filter) {
             case 'CORRECT': return isCorrect;
