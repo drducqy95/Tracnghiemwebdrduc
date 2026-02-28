@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { db } from '../db';
 import type { QuestionType } from '../db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { X, Plus, Trash2, Image as ImageIcon, Upload, FileSpreadsheet, FileJson, FileType } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { importQuestionsFromJsonFile, importQuestionsFromExcel, importQuestionsFromDocx, importQuestionsFromZip } from '../services/ImportService';
 
 type TabIndex = 0 | 1 | 2;
@@ -25,7 +25,12 @@ interface FileButtonProps {
 
 export const CreateQuestionScreen: React.FC = () => {
     const navigate = useNavigate();
+    const { id: editIdParam } = useParams<{ id: string }>();
+    const location = useLocation();
+    const editId = editIdParam ? Number(editIdParam) : null;
+    const isEditMode = editId !== null && !isNaN(editId);
     const [activeTab, setActiveTab] = useState<TabIndex>(0); // 0: Question, 1: Subject, 2: Import
+    const [loaded, setLoaded] = useState(false);
 
     // --- DATA ---
     const subjects = useLiveQuery(() => db.subjects.toArray()) || [];
@@ -33,7 +38,8 @@ export const CreateQuestionScreen: React.FC = () => {
 
     // --- TAB 0: ADD QUESTION STATE ---
     const [qType, setQType] = useState<QuestionType>('MULTIPLE_CHOICE');
-    const [subjectId, setSubjectId] = useState<number>(0);
+    const locationState = location.state as { subjectId?: number } | null;
+    const [subjectId, setSubjectId] = useState<number>(locationState?.subjectId ?? 0);
     const [content, setContent] = useState('');
     const [explanation, setExplanation] = useState('');
 
@@ -64,6 +70,33 @@ export const CreateQuestionScreen: React.FC = () => {
     const [importTargetId, setImportTargetId] = useState<number>(-1); // -1 = Auto
     const [importStatus, setImportStatus] = useState('');
 
+    // --- EDIT MODE: Load existing question ---
+    useEffect(() => {
+        if (!isEditMode || loaded) return;
+        const loadQuestion = async () => {
+            const q = await db.questions.get(editId!);
+            if (q) {
+                setQType(q.questionType);
+                setSubjectId(q.subjectId);
+                setContent(q.content);
+                setExplanation(q.explanation || '');
+                setQImage(q.image || null);
+                setExplImage(q.explanationImage || null);
+                setOptions(q.options.length > 0 ? q.options : ['', '', '', '']);
+                setOptionImages(q.optionImages.length > 0 ? q.optionImages : [null, null, null, null]);
+                if (q.questionType === 'TRUE_FALSE') {
+                    setTfAnswer(q.correctAnswers[0] === 'TRUE');
+                } else {
+                    setCorrectAnswers(q.correctAnswers.length > 0 ? q.correctAnswers : ['A']);
+                }
+                setSubQuestions(q.subQuestions.length > 0 ? q.subQuestions : ['', '']);
+                setSubAnswers(q.subAnswers.length > 0 ? q.subAnswers : [true, true]);
+            }
+            setLoaded(true);
+        };
+        loadQuestion();
+    }, [isEditMode, editId, loaded]);
+
     // --- HANDLERS ---
 
     const handleSaveQuestion = async () => {
@@ -75,7 +108,7 @@ export const CreateQuestionScreen: React.FC = () => {
         const finalOptions = qType === 'MULTIPLE_CHOICE' ? options : [];
         const finalOptionImages = qType === 'MULTIPLE_CHOICE' ? optionImages : [];
 
-        await db.questions.add({
+        const questionData = {
             subjectId,
             content,
             questionType: qType,
@@ -89,13 +122,23 @@ export const CreateQuestionScreen: React.FC = () => {
             explanation: explanation || null,
             image: qImage,
             explanationImage: explImage,
-            status: 0,
-            createdAt: Date.now(),
-            selectedAnswer: null,
-            selectedSubAnswers: []
-        });
+        };
 
-        alert('Đã lưu câu hỏi!');
+        if (isEditMode) {
+            await db.questions.update(editId!, questionData);
+            alert('Đã cập nhật câu hỏi!');
+            navigate(-1);
+            return;
+        } else {
+            await db.questions.add({
+                ...questionData,
+                status: 0,
+                createdAt: Date.now(),
+                selectedAnswer: null,
+                selectedSubAnswers: []
+            });
+            alert('Đã lưu câu hỏi!');
+        }
         // Reset specific fields
         setContent('');
         setExplanation('');
@@ -145,24 +188,26 @@ export const CreateQuestionScreen: React.FC = () => {
         <div className="space-y-6 animate-in fade-in duration-500 pb-20">
             {/* Header */}
             <div className="flex justify-between items-center px-2">
-                <h2 className="text-2xl font-bold italic">Thêm Dữ Liệu</h2>
+                <h2 className="text-2xl font-bold italic">{isEditMode ? 'Sửa Câu Hỏi' : 'Thêm Dữ Liệu'}</h2>
                 <button onClick={() => navigate(-1)} className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-full">
                     <X size={24} />
                 </button>
             </div>
 
-            {/* Tabs */}
-            <div className="flex p-1 bg-gray-100 dark:bg-zinc-800 rounded-2xl mx-2">
-                {['Thêm Câu Hỏi', 'Thêm Môn', 'Import File'].map((label, idx) => (
-                    <button
-                        key={idx}
-                        onClick={() => setActiveTab(idx as TabIndex)}
-                        className={`flex-1 py-3 rounded-xl text-xs font-bold uppercase transition-all ${activeTab === idx ? 'bg-white dark:bg-zinc-700 shadow-sm text-primary' : 'text-gray-400'}`}
-                    >
-                        {label}
-                    </button>
-                ))}
-            </div>
+            {/* Tabs - hidden in edit mode */}
+            {!isEditMode && (
+                <div className="flex p-1 bg-gray-100 dark:bg-zinc-800 rounded-2xl mx-2">
+                    {['Thêm Câu Hỏi', 'Thêm Môn', 'Import File'].map((label, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => setActiveTab(idx as TabIndex)}
+                            className={`flex-1 py-3 rounded-xl text-xs font-bold uppercase transition-all ${activeTab === idx ? 'bg-white dark:bg-zinc-700 shadow-sm text-primary' : 'text-gray-400'}`}
+                        >
+                            {label}
+                        </button>
+                    ))}
+                </div>
+            )}
 
             {/* CONTENT AREA */}
             <div className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-6 shadow-sm border border-gray-100 dark:border-zinc-800 min-h-[60vh]">
@@ -300,7 +345,7 @@ export const CreateQuestionScreen: React.FC = () => {
                             <ImagePicker label="Ảnh giải thích" image={explImage} onSet={setExplImage} />
                         </div>
 
-                        <button onClick={handleSaveQuestion} className="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/30">Lưu Câu Hỏi</button>
+                        <button onClick={handleSaveQuestion} className="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/30">{isEditMode ? 'Cập Nhật Câu Hỏi' : 'Lưu Câu Hỏi'}</button>
                     </div>
                 )}
 
