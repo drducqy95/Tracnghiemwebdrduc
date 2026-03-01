@@ -30,7 +30,7 @@ export const UserGuideScreen: React.FC = () => {
                         Chào mừng bạn đến với ứng dụng <b>Ôn Thi Trắc Nghiệm DrDucQY95</b>.
                         Đây là ứng dụng web hỗ trợ ôn tập kiến thức y khoa (và các lĩnh vực khác) một cách hiệu quả, mọi lúc mọi nơi.
                         Ứng dụng hoạt động theo cơ chế <b>Offline First</b> (PWA), cho phép bạn sử dụng ngay cả khi không có mạng internet sau lần tải đầu tiên.
-                        Khi sử dụng lần đầu, bạn hãy vào Cài Đặt => lướt xuống cuối, chọn bộ đề có sẵn cần học để tải về. Hoặc bạn có thể import bộ đề của mình theo hướng dẫn ở dưới.
+                        Khi sử dụng lần đầu, bạn hãy vào Cài Đặt ={'>'} lướt xuống cuối, chọn bộ đề có sẵn cần học để tải về. Hoặc bạn có thể import bộ đề của mình theo hướng dẫn ở dưới.
                     </p>
                 </section>
 
@@ -43,7 +43,7 @@ export const UserGuideScreen: React.FC = () => {
                     <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
                         <li className="flex gap-2">
                             <span className="font-bold text-gray-800 dark:text-gray-100">• Ngân hàng câu hỏi:</span>
-                            Quản lý các bộ đề thi, môn học theo cấu trúc cây thư mục đa cấp (Bộ đề gốc - Bộ đề con - Câu hỏi). Các bạn có thể chỉnh sửa nội dung câu hỏi, đáp án để chính xác hơn nếu thấy sai (nút chỉnh sửa ở mỗi câu hỏi). Truy cập tại Home => Ngân hàng
+                            Quản lý các bộ đề thi, môn học theo cấu trúc cây thư mục đa cấp (Bộ đề gốc - Bộ đề con - Câu hỏi). Các bạn có thể chỉnh sửa nội dung câu hỏi, đáp án để chính xác hơn nếu thấy sai (nút chỉnh sửa ở mỗi câu hỏi). Truy cập tại Home ={'>'} Ngân hàng
                         </li>
                         <li className="flex gap-2">
                             <span className="font-bold text-gray-800 dark:text-gray-100">• Thi thử & Luyện tập:</span>
