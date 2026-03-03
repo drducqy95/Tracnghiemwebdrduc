@@ -159,7 +159,7 @@ export const SettingsScreen: React.FC = () => {
     const colors = ['#1565C0', '#2E7D32', '#C62828', '#6A1B9A', '#EF6C00', '#37474F'];
 
     return (
-        <div className="space-y-8 animate-in fade-in duration-500 pb-20">
+        <div className="space-y-8 animate-in fade-in duration-500">
             <h2 className="text-2xl font-bold italic px-2">Cài Đặt</h2>
 
             {/* Profile Section */}

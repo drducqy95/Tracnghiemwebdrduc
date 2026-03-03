@@ -63,7 +63,7 @@ export const ProgressDashboardScreen: React.FC = () => {
     };
 
     return (
-        <div className="space-y-6 animate-in fade-in duration-500 pb-10">
+        <div className="space-y-6 animate-in fade-in duration-500">
             <h2 className="text-2xl font-bold italic px-2">Tiến độ Học tập</h2>
 
             {/* Summary Stats */}

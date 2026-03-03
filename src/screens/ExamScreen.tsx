@@ -280,7 +280,7 @@ export const ExamScreen: React.FC = () => {
     }
 
     return (
-        <div className="h-screen flex flex-col bg-gray-50 dark:bg-zinc-950">
+        <div className="fixed inset-0 z-50 flex flex-col bg-gray-50/90 dark:bg-zinc-950/90">
             {/* Header */}
             <div className="bg-white dark:bg-zinc-900 border-b border-gray-100 dark:border-zinc-800 p-3 flex items-center justify-between shadow-sm z-20">
                 <button onClick={() => setShowExitConfirm(true)} className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-xl">
@@ -339,9 +339,9 @@ export const ExamScreen: React.FC = () => {
             )}
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto p-4 pb-32">
+            <div className="flex-1 overflow-y-auto px-3 py-2">
                 <div className="max-w-2xl mx-auto" key={currentQuestion.id}>
-                    <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+                    <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
                         <span>Câu {currentIndex + 1} / {activeConfig.count}</span>
                     </div>
 
@@ -359,20 +359,20 @@ export const ExamScreen: React.FC = () => {
             </div>
 
             {/* Footer */}
-            <div className="bg-white dark:bg-zinc-900 border-t border-gray-100 dark:border-zinc-800 p-4 flex gap-4 z-10 safe-area-bottom">
+            <div className="bg-white dark:bg-zinc-900 border-t border-gray-100 dark:border-zinc-800 px-3 py-2 flex gap-3 z-10">
                 <button
                     onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
                     disabled={currentIndex === 0}
-                    className="flex-1 p-4 bg-gray-50 dark:bg-zinc-800 rounded-2xl font-bold text-gray-600 dark:text-gray-300 disabled:opacity-50 transition-all active:scale-95 flex items-center justify-center gap-2"
+                    className="flex-1 py-2.5 bg-gray-50 dark:bg-zinc-800 rounded-xl font-bold text-sm text-gray-600 dark:text-gray-300 disabled:opacity-50 transition-all active:scale-95 flex items-center justify-center gap-1"
                 >
-                    <ChevronLeft size={20} /> Trước
+                    <ChevronLeft size={18} /> Trước
                 </button>
                 <button
                     onClick={() => setCurrentIndex(Math.min(activeQuestions.length - 1, currentIndex + 1))}
                     disabled={currentIndex === activeQuestions.length - 1}
-                    className="flex-1 p-4 bg-primary text-white rounded-2xl shadow-lg shadow-primary/20 font-bold disabled:opacity-50 transition-all active:scale-95 flex items-center justify-center gap-2"
+                    className="flex-1 py-2.5 bg-primary text-white rounded-xl shadow-md shadow-primary/20 font-bold text-sm disabled:opacity-50 transition-all active:scale-95 flex items-center justify-center gap-1"
                 >
-                    Sau <ChevronRight size={20} />
+                    Sau <ChevronRight size={18} />
                 </button>
             </div>
 

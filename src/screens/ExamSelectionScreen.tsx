@@ -72,7 +72,7 @@ export const ExamSelectionScreen: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col h-full pb-20">
+        <div className="flex flex-col h-full">
             {/* Header */}
             <div className="px-6 py-4 flex flex-col gap-4 sticky top-0 bg-gray-50/90 dark:bg-black/90 backdrop-blur-md z-10">
                 <div className="flex justify-between items-center">

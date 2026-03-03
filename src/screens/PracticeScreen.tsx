@@ -158,7 +158,7 @@ export const PracticeScreen: React.FC = () => {
         const progressPercent = stats.total > 0 ? Math.round((stats.mastered / stats.total) * 100) : 0;
 
         return (
-            <div className="h-screen flex flex-col bg-gray-50 dark:bg-zinc-950">
+            <div className="fixed inset-0 z-50 flex flex-col bg-gray-50/90 dark:bg-zinc-950/90">
                 {/* Header */}
                 <div className="bg-white dark:bg-zinc-900 border-b border-gray-100 dark:border-zinc-800 p-4 flex items-center gap-4 shadow-sm">
                     <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
@@ -266,7 +266,7 @@ export const PracticeScreen: React.FC = () => {
     // === PRACTICE MODE (existing logic) ===
     if (questions.length === 0) {
         return (
-            <div className="h-screen flex flex-col bg-gray-50 dark:bg-zinc-950">
+            <div className="fixed inset-0 z-50 flex flex-col bg-gray-50/90 dark:bg-zinc-950/90">
                 <div className="bg-white dark:bg-zinc-900 border-b border-gray-100 dark:border-zinc-800 p-4 flex items-center gap-4 shadow-sm">
                     <button onClick={() => setPracticeMode(null)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
                         <ArrowLeft size={24} />
@@ -295,38 +295,38 @@ export const PracticeScreen: React.FC = () => {
     const modeLabel = practiceMode === 'all' ? 'Toàn bộ' : practiceMode === 'unlearned' ? 'Chưa học' : 'Câu sai';
 
     return (
-        <div className="h-screen flex flex-col bg-gray-50 dark:bg-zinc-950">
+        <div className="fixed inset-0 z-50 flex flex-col bg-gray-50/90 dark:bg-zinc-950/90">
             {/* Header */}
-            <div className="bg-white dark:bg-zinc-900 border-b border-gray-100 dark:border-zinc-800 p-4 flex items-center justify-between shadow-sm z-10">
-                <button onClick={() => setPracticeMode(null)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
-                    <ArrowLeft size={24} />
+            <div className="bg-white dark:bg-zinc-900 border-b border-gray-100 dark:border-zinc-800 px-3 py-2 flex items-center justify-between z-10">
+                <button onClick={() => setPracticeMode(null)} className="p-1.5 -ml-1 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
+                    <ArrowLeft size={20} />
                 </button>
                 <div className="text-center">
                     <h1 className="font-bold text-sm line-clamp-1">{subject.name}</h1>
-                    <p className="text-xs text-blue-500 font-bold uppercase tracking-wider">{modeLabel}</p>
+                    <p className="text-[10px] text-blue-500 font-bold uppercase tracking-wider">{modeLabel}</p>
                 </div>
-                <div className="flex gap-1">
-                    <button onClick={handleResetQuestion} className="p-2 text-gray-400 hover:text-primary transition-colors" title="Làm lại">
-                        <RotateCcw size={20} />
+                <div className="flex gap-0.5">
+                    <button onClick={handleResetQuestion} className="p-1.5 text-gray-400 hover:text-primary transition-colors" title="Làm lại">
+                        <RotateCcw size={18} />
                     </button>
-                    <button onClick={() => setShowExplanation(!showExplanation)} className="p-2 text-gray-400 hover:text-primary transition-colors" title="Xem đáp án">
-                        {showExplanation ? <EyeOff size={24} /> : <Eye size={24} />}
+                    <button onClick={() => setShowExplanation(!showExplanation)} className="p-1.5 text-gray-400 hover:text-primary transition-colors" title="Xem đáp án">
+                        {showExplanation ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>
                 </div>
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto p-4 pb-32">
-                <div className="max-w-2xl mx-auto space-y-6 animate-in slide-in-from-right-4 duration-300" key={currentQ.id}>
-                    <div className="bg-white dark:bg-zinc-900 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-zinc-800">
-                        <div className="flex justify-between items-start mb-4">
-                            <div className="px-3 py-1 bg-gray-100 dark:bg-zinc-800 rounded-lg text-xs font-bold text-gray-500">
+            <div className="flex-1 overflow-y-auto px-3 py-2">
+                <div className="max-w-2xl mx-auto animate-in slide-in-from-right-4 duration-300" key={currentQ.id}>
+                    <div className="bg-white dark:bg-zinc-900 p-3 rounded-2xl shadow-sm border border-gray-100 dark:border-zinc-800">
+                        <div className="flex justify-between items-start mb-2">
+                            <div className="px-2 py-0.5 bg-gray-100 dark:bg-zinc-800 rounded text-[10px] font-bold text-gray-500">
                                 Câu {currentIndex + 1}/{questions.length}
                             </div>
                             {isChecked && resultStatus !== undefined && (
                                 resultStatus ?
-                                    <span className="flex items-center gap-1 text-green-500 font-bold text-xs animate-in zoom-in-95"><CheckCircle size={14} /> Đúng</span> :
-                                    <span className="flex items-center gap-1 text-red-500 font-bold text-xs animate-in zoom-in-95"><XCircle size={14} /> Sai</span>
+                                    <span className="flex items-center gap-1 text-green-500 font-bold text-[10px] animate-in zoom-in-95"><CheckCircle size={12} /> Đúng</span> :
+                                    <span className="flex items-center gap-1 text-red-500 font-bold text-[10px] animate-in zoom-in-95"><XCircle size={12} /> Sai</span>
                             )}
                         </div>
 
@@ -342,9 +342,9 @@ export const PracticeScreen: React.FC = () => {
                         {answered && !isChecked && !showExplanation && (
                             <button
                                 onClick={() => handleCheckResult(currentQ.id!)}
-                                className="w-full mt-6 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-2xl font-bold text-sm shadow-lg shadow-blue-500/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2 animate-in fade-in slide-in-from-bottom-4"
+                                className="w-full mt-3 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-bold text-sm shadow-md shadow-blue-500/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2 animate-in fade-in slide-in-from-bottom-4"
                             >
-                                <ClipboardCheck size={20} />
+                                <ClipboardCheck size={18} />
                                 Kiểm tra kết quả
                             </button>
                         )}
@@ -353,20 +353,20 @@ export const PracticeScreen: React.FC = () => {
             </div>
 
             {/* Footer */}
-            <div className="bg-white dark:bg-zinc-900 border-t border-gray-100 dark:border-zinc-800 p-4 flex items-center justify-between z-10 safe-area-bottom">
+            <div className="bg-white dark:bg-zinc-900 border-t border-gray-100 dark:border-zinc-800 px-3 py-2 flex items-center justify-between z-10">
                 <button
                     onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
                     disabled={currentIndex === 0}
-                    className="flex items-center gap-2 px-6 py-3 rounded-2xl font-bold bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 disabled:opacity-50 transition-all hover:bg-gray-200"
+                    className="flex items-center gap-1 px-4 py-2 rounded-xl font-bold text-sm bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 disabled:opacity-50 transition-all"
                 >
-                    <ChevronLeft size={20} /> Trước
+                    <ChevronLeft size={18} /> Trước
                 </button>
                 <button
                     onClick={() => setCurrentIndex(Math.min(questions.length - 1, currentIndex + 1))}
                     disabled={currentIndex === questions.length - 1}
-                    className="flex items-center gap-2 px-6 py-3 rounded-2xl font-bold bg-primary text-white shadow-lg shadow-primary/30 disabled:opacity-50 transition-all active:scale-95"
+                    className="flex items-center gap-1 px-4 py-2 rounded-xl font-bold text-sm bg-primary text-white shadow-md shadow-primary/30 disabled:opacity-50 transition-all active:scale-95"
                 >
-                    Sau <ChevronRight size={20} />
+                    Sau <ChevronRight size={18} />
                 </button>
             </div>
         </div>

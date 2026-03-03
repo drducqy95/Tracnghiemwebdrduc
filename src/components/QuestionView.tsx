@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Question } from '../db';
 import { Check, X, AlertCircle } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { ImageLightbox } from './ImageLightbox';
 
 function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -25,19 +26,28 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
     onAnswer,
     onSubAnswer
 }) => {
+    const [zoomedImage, setZoomedImage] = useState<string | null>(null);
+
     return (
-        <div className="space-y-6">
+        <div className="space-y-2">
+            {zoomedImage && <ImageLightbox src={zoomedImage} onClose={() => setZoomedImage(null)} />}
+
             {/* Question Content */}
-            <div className="space-y-4">
+            <div className="space-y-2">
                 {question.image && (
-                    <img src={question.image} alt="Question" className="w-full rounded-[2rem] shadow-sm border border-gray-100 dark:border-zinc-800" />
+                    <img
+                        src={question.image}
+                        alt="Question"
+                        className="w-full max-h-40 object-contain rounded-2xl shadow-sm border border-gray-100 dark:border-zinc-800 cursor-zoom-in hover:opacity-90 transition-opacity"
+                        onClick={() => setZoomedImage(question.image!)}
+                    />
                 )}
-                <h3 className="text-lg font-bold leading-relaxed">{question.content}</h3>
+                <h3 className="text-base font-bold leading-snug">{question.content}</h3>
             </div>
 
             {/* Answer Area */}
             {question.questionType === 'MULTIPLE_CHOICE' && (
-                <div className="space-y-3">
+                <div className="space-y-1.5">
                     {question.options.map((option, idx) => {
                         const letter = String.fromCharCode(65 + idx);
                         const isSelected = !!selectedAnswer?.includes(letter);
@@ -68,22 +78,27 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
                                 disabled={showResult}
                                 onClick={() => onAnswer(letter)}
                                 className={cn(
-                                    "w-full p-4 rounded-2xl border text-left transition-all active:scale-[0.99] flex gap-4 items-center",
+                                    "w-full p-2.5 rounded-xl border text-left transition-all active:scale-[0.99] flex gap-3 items-center text-sm",
                                     buttonStyle
                                 )}
                             >
                                 <div className={cn(
-                                    "w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 transition-colors",
+                                    "w-6 h-6 rounded-md flex items-center justify-center font-bold text-[10px] shrink-0 transition-colors",
                                     badgeStyle
                                 )}>
-                                    {showResult && isCorrect ? <Check size={16} /> :
-                                        showResult && isSelected && !isCorrect ? <X size={16} /> :
+                                    {showResult && isCorrect ? <Check size={14} /> :
+                                        showResult && isSelected && !isCorrect ? <X size={14} /> :
                                             letter}
                                 </div>
                                 <div className="flex-1">
                                     {option}
                                     {question.optionImages?.[idx] && (
-                                        <img src={question.optionImages[idx]!} alt={`Option ${letter}`} className="mt-2 rounded-xl max-h-40" />
+                                        <img
+                                            src={question.optionImages[idx]!}
+                                            alt={`Option ${letter}`}
+                                            className="mt-1 rounded-lg max-h-32 cursor-zoom-in hover:opacity-90 transition-opacity"
+                                            onClick={(e) => { e.stopPropagation(); setZoomedImage(question.optionImages![idx]!); }}
+                                        />
                                     )}
                                 </div>
                             </button>
@@ -93,7 +108,7 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
             )}
 
             {question.questionType === 'TRUE_FALSE' && (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-2">
                     <TFButton
                         label="Đúng (True)"
                         isSelected={selectedAnswer === 'TRUE'}
@@ -114,10 +129,10 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
             )}
 
             {question.questionType === 'TRUE_FALSE_TABLE' && (
-                <div className="space-y-4">
+                <div className="space-y-2">
                     {question.subQuestions.map((subQ, idx) => (
-                        <div key={idx} className="p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 shadow-sm space-y-3">
-                            <p className="text-sm font-medium">{idx + 1}. {subQ}</p>
+                        <div key={idx} className="p-3 rounded-2xl bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 shadow-sm space-y-1.5">
+                            <p className="text-xs font-medium">{idx + 1}. {subQ}</p>
                             <div className="flex gap-2">
                                 <MiniTFButton
                                     active={selectedSubAnswers[idx] === true}
@@ -137,8 +152,8 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
 
             {/* Correct Answer Summary — shown after checking */}
             {showResult && (
-                <div className="p-4 rounded-2xl bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-900/30 animate-in fade-in duration-300">
-                    <p className="text-sm font-bold text-blue-700 dark:text-blue-400">
+                <div className="px-3 py-2 rounded-xl bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-900/30 animate-in fade-in duration-300">
+                    <p className="text-xs font-bold text-blue-700 dark:text-blue-400">
                         📌 Đáp án đúng: {
                             question.questionType === 'TRUE_FALSE_TABLE'
                                 ? question.subAnswers.map((a, i) => `${i + 1}. ${a ? 'Đúng' : 'Sai'}`).join(' | ')
@@ -150,14 +165,19 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
 
             {/* Explanation */}
             {showResult && (question.explanation || question.explanationImage) && (
-                <div className="p-6 rounded-[2rem] bg-orange-50 dark:bg-orange-500/10 border border-orange-100 dark:border-orange-900/30 animate-in slide-in-from-top-4 duration-500">
-                    <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-bold mb-3">
-                        <AlertCircle size={18} />
-                        <h4>Giải thích:</h4>
+                <div className="px-3 py-2 rounded-xl bg-orange-50 dark:bg-orange-500/10 border border-orange-100 dark:border-orange-900/30 animate-in slide-in-from-top-4 duration-500">
+                    <div className="flex items-center gap-1.5 text-orange-600 dark:text-orange-400 font-bold mb-1">
+                        <AlertCircle size={14} />
+                        <h4 className="text-xs">Giải thích:</h4>
                     </div>
-                    {question.explanation && <p className="text-sm leading-relaxed">{question.explanation}</p>}
+                    {question.explanation && <p className="text-xs leading-relaxed">{question.explanation}</p>}
                     {question.explanationImage && (
-                        <img src={question.explanationImage} alt="Explanation" className="mt-4 rounded-2xl w-full" />
+                        <img
+                            src={question.explanationImage}
+                            alt="Explanation"
+                            className="mt-2 rounded-xl w-full max-h-40 object-contain cursor-zoom-in hover:opacity-90 transition-opacity"
+                            onClick={() => setZoomedImage(question.explanationImage!)}
+                        />
                     )}
                 </div>
             )}
@@ -170,16 +190,16 @@ const TFButton = ({ label, isSelected, isCorrect, showResult, onClick, color }: 
         disabled={showResult}
         onClick={onClick}
         className={cn(
-            "p-6 rounded-[2rem] flex flex-col items-center gap-3 border-2 transition-all active:scale-95",
+            "p-3 rounded-xl flex flex-col items-center gap-1.5 border-2 transition-all active:scale-95",
             isSelected ? "border-primary" : "border-gray-100 dark:border-zinc-800 bg-white dark:bg-zinc-900",
             showResult && isCorrect && "border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10",
             showResult && isSelected && !isCorrect && "border-red-500 bg-red-50 dark:bg-red-500/10"
         )}
     >
-        <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center text-white", color)}>
-            {label.includes('Đúng') ? <Check size={24} /> : <X size={24} />}
+        <div className={cn("w-8 h-8 rounded-xl flex items-center justify-center text-white", color)}>
+            {label.includes('Đúng') ? <Check size={18} /> : <X size={18} />}
         </div>
-        <span className="font-bold">{label}</span>
+        <span className="font-bold text-sm">{label}</span>
     </button>
 );
 

@@ -185,7 +185,7 @@ export const CreateQuestionScreen: React.FC = () => {
     const renderOptionLetter = (idx: number) => String.fromCharCode(65 + idx);
 
     return (
-        <div className="space-y-6 animate-in fade-in duration-500 pb-20">
+        <div className="space-y-6 animate-in fade-in duration-500">
             {/* Header */}
             <div className="flex justify-between items-center px-2">
                 <h2 className="text-2xl font-bold italic">{isEditMode ? 'Sửa Câu Hỏi' : 'Thêm Dữ Liệu'}</h2>

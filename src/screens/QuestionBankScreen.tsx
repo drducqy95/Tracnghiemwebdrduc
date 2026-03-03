@@ -18,7 +18,7 @@ export const QuestionBankScreen: React.FC = () => {
     // Keeping it simple: Show full tree.
 
     return (
-        <div className="space-y-6 animate-in fade-in duration-500 pb-20">
+        <div className="space-y-6 animate-in fade-in duration-500">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold italic">Ngân Hàng</h2>
                 <div className="flex gap-2">

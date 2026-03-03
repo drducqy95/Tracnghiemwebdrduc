@@ -85,10 +85,81 @@
           "status": "DONE"
         }
       ]
+    },
+    {
+      "id": "M4",
+      "title": "Flash Card UI for Question Bank",
+      "status": "DONE",
+      "tasks": [
+        {
+          "id": "T4.1",
+          "desc": "Refactor QuestionDetailScreen to flash card (one-at-a-time) display",
+          "status": "DONE"
+        },
+        {
+          "id": "T4.2",
+          "desc": "Add search/filter bar to QuestionDetailScreen",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "M5",
+      "title": "Layout Optimization - Viewport Fit",
+      "status": "DONE",
+      "tasks": [
+        {
+          "id": "T5.1",
+          "desc": "Fix MainLayout: min-h-screen → h-screen flex-col overflow-y-auto",
+          "status": "DONE"
+        },
+        {
+          "id": "T5.2",
+          "desc": "Remove redundant padding (pb-20/mb-20) from 11 screens",
+          "status": "DONE"
+        },
+        {
+          "id": "T5.3",
+          "desc": "Compact QuestionView (spacing, padding, badges, fonts)",
+          "status": "DONE"
+        },
+        {
+          "id": "T5.4",
+          "desc": "Compact screen headers/footers (QuestionDetail, Practice, Exam, Review)",
+          "status": "DONE"
+        },
+        {
+          "id": "T5.5",
+          "desc": "Fix self-contained screens: h-screen → fixed inset-0 z-50",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "M6",
+      "title": "Image Lightbox & Background Image",
+      "status": "DONE",
+      "tasks": [
+        {
+          "id": "T6.1",
+          "desc": "Create ImageLightbox component (zoom, drag, double-click)",
+          "status": "DONE"
+        },
+        {
+          "id": "T6.2",
+          "desc": "Integrate lightbox into QuestionView (3 image types)",
+          "status": "DONE"
+        },
+        {
+          "id": "T6.3",
+          "desc": "Make screen backgrounds semi-transparent for background image",
+          "status": "DONE"
+        }
+      ]
     }
   ],
-  "current_milestone": "M3",
+  "current_milestone": "M6",
   "meta": {
-    "last_updated": "2026-02-28T20:37:23.518726"
+    "last_updated": "2026-03-03T10:19:08+07:00"
   }
 }

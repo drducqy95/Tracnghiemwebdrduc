@@ -49,7 +49,7 @@ export const PracticeSelectionScreen: React.FC = () => {
     const dropdownClass = `px-3 py-2 rounded-xl text-xs font-bold border outline-none focus:border-primary appearance-none ${darkMode ? 'bg-zinc-800 text-white border-zinc-700' : 'bg-white text-gray-700 border-gray-200'}`;
 
     return (
-        <div className="flex flex-col h-full pb-20">
+        <div className="flex flex-col h-full">
             <div className="px-6 py-4 flex justify-between items-center sticky top-0 bg-gray-50/90 dark:bg-black/90 backdrop-blur-md z-10">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400">

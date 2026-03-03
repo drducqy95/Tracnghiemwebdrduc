@@ -7,7 +7,7 @@ export const UserGuideScreen: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="space-y-6 animate-in fade-in duration-500 pb-20">
+        <div className="space-y-6 animate-in fade-in duration-500">
             {/* Header */}
             <div className="flex items-center gap-4">
                 <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
@@ -30,7 +30,7 @@ export const UserGuideScreen: React.FC = () => {
                         Chào mừng bạn đến với ứng dụng <b>Ôn Thi Trắc Nghiệm DrDucQY95</b>.
                         Đây là ứng dụng web hỗ trợ ôn tập kiến thức y khoa (và các lĩnh vực khác) một cách hiệu quả, mọi lúc mọi nơi.
                         Ứng dụng hoạt động theo cơ chế <b>Offline First</b> (PWA), cho phép bạn sử dụng ngay cả khi không có mạng internet sau lần tải đầu tiên.
-                        Khi sử dụng lần đầu, bạn hãy vào Cài Đặt ={'>'} lướt xuống cuối, chọn bộ đề có sẵn cần học để tải về. Hoặc bạn có thể import bộ đề của mình theo hướng dẫn ở dưới.
+                        Khi sử dụng lần đầu, bạn hãy vào Cài Đặt =&gt; lướt xuống cuối, chọn bộ đề có sẵn cần học để tải về. Hoặc bạn có thể import bộ đề của mình theo hướng dẫn ở dưới.
                     </p>
                 </section>
 
@@ -43,8 +43,9 @@ export const UserGuideScreen: React.FC = () => {
                     <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
                         <li className="flex gap-2">
                             <span className="font-bold text-gray-800 dark:text-gray-100">• Ngân hàng câu hỏi:</span>
-                            Quản lý các bộ đề thi, môn học theo cấu trúc cây thư mục đa cấp (Bộ đề gốc - Bộ đề con - Câu hỏi). Các bạn có thể chỉnh sửa nội dung câu hỏi, đáp án để chính xác hơn nếu thấy sai (nút chỉnh sửa ở mỗi câu hỏi). Truy cập tại Home ={'>'} Ngân hàng
-                        </li>
+                            Quản lý các bộ đề thi, môn học theo cấu trúc cây thư mục đa cấp (Bộ đề gốc - Bộ đề con - Câu hỏi).
+                            Các bạn có thể chỉnh sửa nội dung câu hỏi, đáp án để chính xác hơn nếu thấy sai (nút chỉnh sửa ở mỗi câu hỏi). Truy cập tại Home =&gt; Ngân hàng
+                        </li >
                         <li className="flex gap-2">
                             <span className="font-bold text-gray-800 dark:text-gray-100">• Thi thử & Luyện tập:</span>
                             Chế độ thi mô phỏng thời gian thực (Thi thử) hoặc luyện tập từng câu, có đánh giá đáp án và bổ sung giải thích đáp án nếu có (Ôn tập).
@@ -57,11 +58,11 @@ export const UserGuideScreen: React.FC = () => {
                             <span className="font-bold text-gray-800 dark:text-gray-100">• Cá nhân hóa:</span>
                             Tùy chỉnh giao diện (Sáng/Tối), cỡ chữ, hình nền và các thông tin cá nhân.
                         </li>
-                    </ul>
-                </section>
+                    </ul >
+                </section >
 
                 {/* 3. Import / Export */}
-                <section className="bg-white dark:bg-zinc-900 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-zinc-800">
+                < section className="bg-white dark:bg-zinc-900 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-zinc-800" >
                     <div className="flex items-center gap-3 mb-4 text-blue-500">
                         <Share2 size={24} />
                         <h3 className="text-lg font-bold m-0">Import & Export dữ liệu</h3>
@@ -88,10 +89,10 @@ export const UserGuideScreen: React.FC = () => {
                             </p>
                         </div>
                     </div>
-                </section>
+                </section >
 
                 {/* 4. Template */}
-                <section className="bg-white dark:bg-zinc-900 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-zinc-800">
+                < section className="bg-white dark:bg-zinc-900 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-zinc-800" >
                     <div className="flex items-center gap-3 mb-4 text-orange-500">
                         <FileText size={24} />
                         <h3 className="text-lg font-bold m-0">Cấu trúc Template</h3>
@@ -250,8 +251,8 @@ export const UserGuideScreen: React.FC = () => {
                             </button>
                         </div>
                     </div>
-                </section>
-            </div>
-        </div>
+                </section >
+            </div >
+        </div >
     );
 };

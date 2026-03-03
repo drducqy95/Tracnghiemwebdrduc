@@ -59,7 +59,7 @@ export const PropertySettingsScreen: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 pb-20 animate-in fade-in">
+        <div className="bg-gray-50 dark:bg-zinc-950 animate-in fade-in">
             {/* Header */}
             <div className="sticky top-0 z-10 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md p-4 border-b border-gray-100 dark:border-zinc-800 flex items-center gap-3">
                 <button onClick={() => navigate(-1)} className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-xl transition-colors">

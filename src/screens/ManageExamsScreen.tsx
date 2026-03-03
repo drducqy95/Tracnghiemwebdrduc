@@ -84,7 +84,7 @@ export const ManageExamsScreen: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col h-full bg-gray-50 dark:bg-zinc-950 pb-20">
+        <div className="flex flex-col h-full bg-gray-50 dark:bg-zinc-950">
             <div className="p-4 bg-white dark:bg-zinc-900 border-b border-gray-100 dark:border-zinc-800 flex items-center gap-3 sticky top-0 z-10">
                 <button onClick={() => navigate(-1)} className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-xl">
                     <ChevronLeft size={24} />

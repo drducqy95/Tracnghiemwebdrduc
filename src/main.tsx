@@ -1,4 +1,4 @@
-import { StrictMode, useEffect } from 'react'
+import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
@@ -20,6 +20,7 @@ import { PracticeSelectionScreen } from './screens/PracticeSelectionScreen'
 import { ExamSelectionScreen } from './screens/ExamSelectionScreen'
 import { ManageExamsScreen } from './screens/ManageExamsScreen'
 import { registerSW } from 'virtual:pwa-register'
+import { preloadBundledData, type PreloadProgress } from './services/PreloadService'
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -41,15 +42,33 @@ import { db } from './db'
 
 const App = () => {
   const { darkMode, primaryColor, initialized, setInitialized, fontScale, backgroundUpdateTrigger, fontFamily } = useSettingsStore();
+  const [preloadProgress, setPreloadProgress] = useState<PreloadProgress | null>(null);
+  const [isLoading, setIsLoading] = useState(!initialized);
 
-  // Auto Import
-  // Auto Import
+  // Auto Import — nạp sẵn bộ đề từ public/ lần đầu
   useEffect(() => {
-    // User requested to disable auto-import of problem sets.
-    // We just mark as initialized to proceed.
-    if (!initialized) {
-      setInitialized(true);
+    if (initialized) {
+      setIsLoading(false);
+      return;
     }
+
+    let cancelled = false;
+    const run = async () => {
+      try {
+        await preloadBundledData((progress) => {
+          if (!cancelled) setPreloadProgress(progress);
+        });
+      } catch (err) {
+        console.error('Preload error:', err);
+      } finally {
+        if (!cancelled) {
+          setInitialized(true);
+          setIsLoading(false);
+        }
+      }
+    };
+    run();
+    return () => { cancelled = true; };
   }, [initialized]);
 
   // Dark Mode
@@ -111,6 +130,41 @@ const App = () => {
       if (url) URL.revokeObjectURL(url);
     };
   }, [backgroundUpdateTrigger]);
+
+  // Splash screen khi đang nạp dữ liệu lần đầu
+  if (isLoading) {
+    return (
+      <div style={{
+        display: 'flex', flexDirection: 'column', alignItems: 'center',
+        justifyContent: 'center', height: '100vh', gap: '1.5rem',
+        background: darkMode ? '#1a1a2e' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: '#fff', fontFamily: 'Inter, sans-serif', padding: '2rem',
+      }}>
+        <div style={{ fontSize: '3rem' }}>📚</div>
+        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, margin: 0 }}>Ôn Thi Trắc Nghiệm</h1>
+        <p style={{ opacity: 0.85, margin: 0, textAlign: 'center' }}>
+          {preloadProgress?.message || 'Đang chuẩn bị dữ liệu...'}
+        </p>
+        {preloadProgress && (
+          <div style={{ width: '80%', maxWidth: 320 }}>
+            <div style={{
+              background: 'rgba(255,255,255,0.2)', borderRadius: 999,
+              height: 8, overflow: 'hidden',
+            }}>
+              <div style={{
+                width: `${(preloadProgress.current / preloadProgress.total) * 100}%`,
+                height: '100%', background: '#fff', borderRadius: 999,
+                transition: 'width 0.3s ease',
+              }} />
+            </div>
+            <p style={{ textAlign: 'center', fontSize: '0.85rem', opacity: 0.7, marginTop: '0.5rem' }}>
+              {preloadProgress.current}/{preloadProgress.total} bộ đề
+            </p>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <BrowserRouter>

@@ -1,15 +1,27 @@
 {
   "session_info": {
-    "started_at": "2026-02-27T21:32:42.920682",
-    "last_active": "2026-02-28T20:37:23.516390",
-    "saved_at": "2026-02-28T20:37:23.516350",
-    "resumed_at": "2026-02-28T20:21:53.002111"
+    "started_at": "2026-03-03T09:30:00+07:00",
+    "last_active": "2026-03-03T10:19:08+07:00",
+    "saved_at": "2026-03-03T10:19:08+07:00"
   },
   "working_on": {
-    "feature": "Edit Question Mode",
+    "feature": "Compact Layout + Image Lightbox + Background Image",
     "current_phase": "DONE"
   },
   "pending_tasks": [],
-  "recent_changes": [],
-  "context_notes": []
+  "recent_changes": [
+    "Compacted QuestionView.tsx (spacing, padding, badges, fonts ~40% less height)",
+    "Compacted QuestionDetailScreen, PracticeScreen, ExamScreen, ReviewExamScreen (headers, footers, content areas)",
+    "Fixed self-contained screens: h-screen → fixed inset-0 z-50 to overlay MainLayout",
+    "Removed redundant padding (pb-20/mb-20) from 11 screens",
+    "MainLayout: min-h-screen → h-screen flex-col, pt-6 → pt-2",
+    "Created ImageLightbox.tsx component (zoom +/-, drag, double-click)",
+    "Integrated ImageLightbox into QuestionView for 3 image types",
+    "Made all screen backgrounds semi-transparent for background image visibility"
+  ],
+  "context_notes": [
+    "All routes are inside <MainLayout>, so self-contained screens use fixed inset-0 z-50",
+    "backgroundUpdateTrigger already works in main.tsx",
+    "ImageLightbox uses z-[100] to overlay everything including fixed screens at z-50"
+  ]
 }
