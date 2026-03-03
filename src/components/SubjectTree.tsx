@@ -167,7 +167,7 @@ const SubjectNode: React.FC<SubjectNodeProps> = ({ subject, allSubjects, expande
     };
 
     return (
-        <div className="space-y-2 relative">
+        <div className={`space-y-2 relative ${showMenu ? 'z-30' : ''}`}>
             <div
                 className={`group flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 shadow-sm active:scale-[0.98] transition-all ${level > 0 ? 'ml-6' : ''}`}
                 onClick={handleNodeClick}
